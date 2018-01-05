@@ -1,4 +1,4 @@
-package nl.martijnklene.api;
+package nl.martijnklene.api.infrastructure;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
