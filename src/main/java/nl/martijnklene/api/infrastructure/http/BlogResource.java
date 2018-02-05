@@ -10,12 +10,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.UUID;
 
@@ -73,5 +71,20 @@ public class BlogResource {
                 .buildAndExpand(blogId.toString())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @ApiResponses(
+            @ApiResponse(
+                    code = 200,
+                    message = "Single blog item"
+            )
+    )
+    @RequestMapping(
+            value = "/{blogId}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public ResponseEntity getSingleBlogItem(@PathVariable UUID blogId) {
+        return ResponseEntity.ok(this.blogRepository.findOneById(blogId));
     }
 }
