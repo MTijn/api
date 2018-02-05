@@ -6,9 +6,8 @@ import io.swagger.annotations.ApiResponses;
 import nl.martijnklene.api.application.command.CreateBlogCommand;
 import nl.martijnklene.api.application.repository.BlogRepository;
 import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
-import nl.martijnklene.api.infrastructure.service.spring.CommandBus;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.ProjectedPayload;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +25,12 @@ import java.util.UUID;
 @Api(tags = "blog")
 public class BlogResource {
     private BlogRepository blogRepository;
-    private CommandBus commandBus;
+    private CommandGateway commandGateway;
 
     @Autowired
-    public BlogResource(BlogRepository blogRepository, CommandBus commandBus) {
+    public BlogResource(BlogRepository blogRepository, CommandGateway commandGateway) {
         this.blogRepository = blogRepository;
-        this.commandBus = commandBus;
+        this.commandGateway = commandGateway;
     }
 
     @ApiResponses(
@@ -66,7 +65,8 @@ public class BlogResource {
                 blogId,
                 blogPayload.getTitle()
         );
-        commandBus.handle(createBlogCommand);
+
+        commandGateway.send(createBlogCommand);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

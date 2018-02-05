@@ -11,9 +11,13 @@ import java.util.Collection;
 
 @Repository
 @Transactional
-public class BlogJpaRepository implements BlogRepository{
+public class BlogJpaRepository implements BlogRepository {
     @PersistenceContext
     private EntityManager entityManager;
+
+    public void save(Blog blog) {
+        entityManager.merge(blog);
+    }
 
     public Collection<Blog> findAll() {
         return entityManager.createQuery("SELECT b FROM Blog b", Blog.class).getResultList();

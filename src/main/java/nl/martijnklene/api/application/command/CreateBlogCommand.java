@@ -1,18 +1,21 @@
 package nl.martijnklene.api.application.command;
 
+import org.axonframework.commandhandling.TargetAggregateIdentifier;
+
 import java.util.UUID;
 
 public class CreateBlogCommand {
-    private final UUID blogId;
+    @TargetAggregateIdentifier
+    private final UUID id;
     private final String title;
 
     public CreateBlogCommand(UUID blogId, String title) {
-        this.blogId = blogId;
+        this.id = blogId;
         this.title = title;
     }
 
-    public UUID getBlogId() {
-        return blogId;
+    public UUID getId() {
+        return id;
     }
 
     public String getTitle() {
