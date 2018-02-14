@@ -21,10 +21,4 @@ public class BlogAggregate implements Serializable {
 
     private String title;
 
-    @CommandHandler
-    public BlogAggregate(CreateBlogCommand command) {
-        this.id = command.getId();
-        this.title = command.getTitle();
-        AggregateLifecycle.apply(new BlogCreatedEvent(command.getId(), command.getTitle()));
-    }
 }
