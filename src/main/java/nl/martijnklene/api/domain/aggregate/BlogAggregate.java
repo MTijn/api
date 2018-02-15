@@ -13,6 +13,9 @@ public class BlogAggregate implements Serializable {
 
     private String title;
 
+    public BlogAggregate() {
+    }
+
     public BlogAggregate(UUID id, String title) {
         this.id = id;
         this.title = title;
