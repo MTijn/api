@@ -1,8 +1,11 @@
 package nl.martijnklene.api.application.command;
 
+import org.axonframework.commandhandling.TargetAggregateIdentifier;
+
 import java.util.UUID;
 
 public class CreateBlogPostCommand {
+    @TargetAggregateIdentifier
     private UUID id;
     private String title;
     private String content;
