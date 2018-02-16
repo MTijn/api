@@ -1,4 +1,4 @@
-package nl.martijnklene.api.domain.Projection;
+package nl.martijnklene.api.domain.projection;
 
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
