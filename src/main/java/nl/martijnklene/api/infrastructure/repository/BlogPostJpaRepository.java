@@ -29,4 +29,8 @@ public class BlogPostJpaRepository implements BlogPostRepository{
     public Collection<BlogPost> findAll() {
         return entityManager.createQuery("SELECT b FROM BlogPost b", BlogPost.class).getResultList();
     }
+
+    public void delete(BlogPost blogPost) {
+        entityManager.remove(blogPost);
+    }
 }

@@ -1,16 +1,22 @@
 package nl.martijnklene.api.domain.aggregate;
 
+import lombok.NoArgsConstructor;
 import nl.martijnklene.api.application.command.CreateBlogPost;
+import nl.martijnklene.api.application.command.DeleteBlogPost;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
+import nl.martijnklene.api.domain.event.BlogPostDeleted;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+import static org.axonframework.commandhandling.model.AggregateLifecycle.markDeleted;
 
+@NoArgsConstructor
 @Aggregate
 public class BlogPost implements Serializable{
     @AggregateIdentifier
@@ -20,9 +26,9 @@ public class BlogPost implements Serializable{
     private String tags;
     private String author;
 
+    @SuppressWarnings("all")
     @CommandHandler
     public BlogPost(CreateBlogPost createBlogPost) {
-        this.id = createBlogPost.getId();
         apply(new BlogPostCreated(
                 createBlogPost.getId(),
                 createBlogPost.getTitle(),
@@ -30,5 +36,24 @@ public class BlogPost implements Serializable{
                 createBlogPost.getTags(),
                 createBlogPost.getAuthor()
         ));
+    }
+
+    @EventSourcingHandler
+    public void blogPostCreated(BlogPostCreated blogPostCreated) {
+        this.id = blogPostCreated.getId();
+        this.title = blogPostCreated.getTitle();
+        this.content = blogPostCreated.getContent();
+        this.tags = blogPostCreated.getTags();
+        this.author = blogPostCreated.getAuthor();
+    }
+
+    @CommandHandler
+    public void delete(DeleteBlogPost deleteBlogPost) {
+        apply(new BlogPostDeleted(deleteBlogPost.getId()));
+    }
+
+    @EventSourcingHandler
+    public void blogPostDeleted(BlogPostDeleted blogPostDeleted) {
+        markDeleted();
     }
 }

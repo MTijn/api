@@ -4,9 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import nl.martijnklene.api.application.command.CreateBlogPost;
+import nl.martijnklene.api.application.command.DeleteBlogPost;
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
-import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
+import nl.martijnklene.api.infrastructure.model.swagger.CreateBlogPayload;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,15 +53,15 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    public ResponseEntity create(@RequestBody BlogPayload blogPayload) {
+    public ResponseEntity create(@RequestBody CreateBlogPayload createBlogPayload) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(
                 id,
-                blogPayload.getTitle(),
-                blogPayload.getContent(),
-                blogPayload.getTags(),
-                blogPayload.getAuthor()
+                createBlogPayload.getTitle(),
+                createBlogPayload.getContent(),
+                createBlogPayload.getTags(),
+                createBlogPayload.getAuthor()
         );
 
         commandGateway.send(blogPost);
@@ -90,5 +91,22 @@ public class BlogPostResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(blogPost, HttpStatus.OK);
+    }
+
+    @ApiResponses(
+            @ApiResponse(
+                    code = 201,
+                    message = "Blog post deleted"
+            )
+    )
+    @RequestMapping(
+            value = "/{blogId}",
+            method = RequestMethod.DELETE
+    )
+    public ResponseEntity deleteBlogPost(@PathVariable UUID blogId) {
+        DeleteBlogPost deleteBlogPost = new DeleteBlogPost(blogId);
+        commandGateway.send(deleteBlogPost);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

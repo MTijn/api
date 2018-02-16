@@ -1,22 +1,25 @@
-package nl.martijnklene.api.domain.eventHandler;
+package nl.martijnklene.api.domain.Projection;
 
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
-import org.axonframework.eventsourcing.EventSourcingHandler;
+import nl.martijnklene.api.domain.event.BlogPostDeleted;
+import org.axonframework.config.ProcessingGroup;
+import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BlogPostEventHandler {
+@ProcessingGroup("BlogPost")
+public class BlogPostProjector {
     private BlogPostRepository blogPostRepository;
 
     @Autowired
-    public BlogPostEventHandler(BlogPostRepository blogPostRepository) {
+    public BlogPostProjector(BlogPostRepository blogPostRepository) {
         this.blogPostRepository = blogPostRepository;
     }
 
-    @EventSourcingHandler
+    @EventHandler
     public void on(BlogPostCreated blogPostCreated) {
         BlogPost blogPost = new BlogPost();
         blogPost.setId(blogPostCreated.getId());
@@ -24,7 +27,12 @@ public class BlogPostEventHandler {
         blogPost.setContent(blogPostCreated.getContent());
         blogPost.setTags(blogPostCreated.getTags());
         blogPost.setAuthor(blogPostCreated.getAuthor());
-
         blogPostRepository.save(blogPost);
+    }
+
+    @EventHandler
+    public void on(BlogPostDeleted blogPostDeleted) {
+        BlogPost blogPost = blogPostRepository.findOneById(blogPostDeleted.getId());
+        blogPostRepository.delete(blogPost);
     }
 }

@@ -9,4 +9,5 @@ public interface BlogPostRepository {
     void save(BlogPost blogPost);
     BlogPost findOneById(UUID id);
     Collection<BlogPost> findAll();
+    void delete(BlogPost blogPost);
 }

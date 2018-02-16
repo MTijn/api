@@ -1,6 +1,6 @@
 package nl.martijnklene.api.infrastructure.model.swagger;
 
-public class BlogPayload {
+public class CreateBlogPayload {
     private String title;
     private String content;
     private String tags;
