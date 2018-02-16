@@ -21,7 +21,6 @@ public class DatabaseConfiguration extends HibernateJpaAutoConfiguration {
     }
 
 
-    @Override
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             EntityManagerFactoryBuilder factoryBuilder) {

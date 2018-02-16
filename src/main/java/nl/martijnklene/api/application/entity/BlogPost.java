@@ -1,10 +1,26 @@
-package nl.martijnklene.api.infrastructure.model.swagger;
+package nl.martijnklene.api.application.entity;
 
-public class BlogPayload {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.UUID;
+
+@Entity
+public class BlogPost implements Serializable{
+    @Id
+    private UUID id;
     private String title;
     private String content;
     private String tags;
     private String author;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
