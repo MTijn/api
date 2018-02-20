@@ -1,25 +1,15 @@
-package nl.martijnklene.api.application.command;
-
-import org.axonframework.commandhandling.TargetAggregateIdentifier;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+package nl.martijnklene.api.domain.event;
 
 import java.util.UUID;
 
-public class CreateBlogPost {
-    @TargetAggregateIdentifier
+public class BlogPostChanged {
     private UUID id;
-    @NotEmpty
     private String title;
-    @NotEmpty
     private String content;
-    @NotEmpty
     private String tags;
-    @NotEmpty
-    @Email
     private String author;
 
-    public CreateBlogPost(UUID id, String title, String content, String tags, String author) {
+    public BlogPostChanged(UUID id, String title, String content, String tags, String author) {
         this.id = id;
         this.title = title;
         this.content = content;

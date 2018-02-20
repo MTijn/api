@@ -2,6 +2,7 @@ package nl.martijnklene.api.domain.projection;
 
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
+import nl.martijnklene.api.domain.event.BlogPostChanged;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
 import nl.martijnklene.api.domain.event.BlogPostDeleted;
 import org.axonframework.config.ProcessingGroup;
@@ -27,6 +28,17 @@ public class BlogPostProjector {
         blogPost.setContent(blogPostCreated.getContent());
         blogPost.setTags(blogPostCreated.getTags());
         blogPost.setAuthor(blogPostCreated.getAuthor());
+        blogPostRepository.save(blogPost);
+    }
+
+    @EventHandler
+    public void on(BlogPostChanged blogPostChanged) {
+        BlogPost blogPost = new BlogPost();
+        blogPost.setId(blogPostChanged.getId());
+        blogPost.setTitle(blogPostChanged.getTitle());
+        blogPost.setContent(blogPostChanged.getContent());
+        blogPost.setTags(blogPostChanged.getTags());
+        blogPost.setAuthor(blogPostChanged.getAuthor());
         blogPostRepository.save(blogPost);
     }
 

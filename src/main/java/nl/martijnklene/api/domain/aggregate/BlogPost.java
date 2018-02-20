@@ -1,8 +1,10 @@
 package nl.martijnklene.api.domain.aggregate;
 
 import lombok.NoArgsConstructor;
+import nl.martijnklene.api.application.command.ChangeBlogPost;
 import nl.martijnklene.api.application.command.CreateBlogPost;
 import nl.martijnklene.api.application.command.DeleteBlogPost;
+import nl.martijnklene.api.domain.event.BlogPostChanged;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
 import nl.martijnklene.api.domain.event.BlogPostDeleted;
 import org.axonframework.commandhandling.CommandHandler;
@@ -46,6 +48,25 @@ public class BlogPost implements Serializable{
         this.content = blogPostCreated.getContent();
         this.tags = blogPostCreated.getTags();
         this.author = blogPostCreated.getAuthor();
+    }
+
+    @CommandHandler
+    public void on(ChangeBlogPost changeBlogPost) {
+        apply(new BlogPostChanged(
+                changeBlogPost.getId(),
+                changeBlogPost.getTitle(),
+                changeBlogPost.getContent(),
+                changeBlogPost.getTags(),
+                changeBlogPost.getAuthor()
+        ));
+    }
+
+    @EventSourcingHandler
+    public void blogPostChanged(BlogPostChanged blogPostChanged) {
+        this.title = blogPostChanged.getTitle();
+        this.content = blogPostChanged.getContent();
+        this.tags = blogPostChanged.getTags();
+        this.author = blogPostChanged.getAuthor();
     }
 
     @CommandHandler

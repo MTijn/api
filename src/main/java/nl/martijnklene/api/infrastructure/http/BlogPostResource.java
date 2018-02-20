@@ -3,11 +3,12 @@ package nl.martijnklene.api.infrastructure.http;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import nl.martijnklene.api.application.command.ChangeBlogPost;
 import nl.martijnklene.api.application.command.CreateBlogPost;
 import nl.martijnklene.api.application.command.DeleteBlogPost;
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
-import nl.martijnklene.api.infrastructure.model.swagger.CreateBlogPayload;
+import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,19 +55,19 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    public ResponseEntity create(@Valid @RequestBody CreateBlogPayload createBlogPayload) {
+    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(
                 id,
-                createBlogPayload.getTitle(),
-                createBlogPayload.getContent(),
-                createBlogPayload.getTags(),
-                createBlogPayload.getAuthor()
+                blogPayload.getTitle(),
+                blogPayload.getContent(),
+                blogPayload.getTags(),
+                blogPayload.getAuthor()
         );
 
         commandGateway.send(blogPost);
-        return ResponseEntity.ok(id);
+        return new ResponseEntity<>(id, HttpStatus.CREATED);
     }
 
     @ApiResponses({
@@ -108,6 +109,33 @@ public class BlogPostResource {
         DeleteBlogPost deleteBlogPost = new DeleteBlogPost(blogId);
         commandGateway.send(deleteBlogPost);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiResponses({
+            @ApiResponse(
+                    code = 201,
+                    message = "Blog post changed"
+            ),
+            @ApiResponse(
+                    code = 404,
+                    message = "Blog post not found"
+            )}
+    )
+    @RequestMapping(
+            value = "/{blogId}",
+            method = RequestMethod.PUT
+    )
+    public ResponseEntity changeBlogPost(@PathVariable UUID blogId, @Valid @RequestBody BlogPayload blogPayload) {
+        ChangeBlogPost changeBlogPost = new ChangeBlogPost(
+                blogId,
+                blogPayload.getTitle(),
+                blogPayload.getContent(),
+                blogPayload.getTags(),
+                blogPayload.getAuthor()
+        );
+
+        commandGateway.send(changeBlogPost);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
