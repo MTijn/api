@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -53,7 +54,7 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    public ResponseEntity create(@RequestBody CreateBlogPayload createBlogPayload) {
+    public ResponseEntity create(@Valid @RequestBody CreateBlogPayload createBlogPayload) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(

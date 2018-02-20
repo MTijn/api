@@ -1,9 +1,16 @@
 package nl.martijnklene.api.infrastructure.model.swagger;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class CreateBlogPayload {
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String content;
+    @NotEmpty
     private String tags;
+    @Email
     private String author;
 
     public String getTitle() {
