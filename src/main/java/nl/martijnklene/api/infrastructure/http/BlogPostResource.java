@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Date;
@@ -130,7 +131,14 @@ public class BlogPostResource {
             method = RequestMethod.DELETE
     )
     public ResponseEntity deleteBlogPost(@PathVariable UUID blogId) {
-        DeleteBlogPost deleteBlogPost = new DeleteBlogPost(blogId);
+        BlogPost blogPost;
+        try {
+            blogPost = blogPostRepository.findOneById(blogId);
+        } catch (Exception noResult) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        DeleteBlogPost deleteBlogPost = new DeleteBlogPost(blogPost.getId());
         commandGateway.send(deleteBlogPost);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -161,24 +169,5 @@ public class BlogPostResource {
 
         commandGateway.send(changeBlogPost);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @ApiResponses({
-            @ApiResponse(
-                    code = 202,
-                    message = "Blog post published"
-            ),
-            @ApiResponse(
-                    code = 404,
-                    message = "Blog post not found"
-            )}
-    )
-    @RequestMapping(
-            value = "/{blogId}/publish"
-    )
-    public ResponseEntity publishBlogPost(@PathVariable UUID blogId) {
-        PublishBlogPost publishBlogPost = new PublishBlogPost(blogId, new Date());
-        commandGateway.send(publishBlogPost);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
