@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponses;
 import nl.martijnklene.api.application.command.ChangeBlogPost;
 import nl.martijnklene.api.application.command.CreateBlogPost;
 import nl.martijnklene.api.application.command.DeleteBlogPost;
+import nl.martijnklene.api.application.command.PublishBlogPost;
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
 import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Date;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -159,5 +161,24 @@ public class BlogPostResource {
 
         commandGateway.send(changeBlogPost);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiResponses({
+            @ApiResponse(
+                    code = 202,
+                    message = "Blog post published"
+            ),
+            @ApiResponse(
+                    code = 404,
+                    message = "Blog post not found"
+            )}
+    )
+    @RequestMapping(
+            value = "/{blogId}/publish"
+    )
+    public ResponseEntity publishBlogPost(@PathVariable UUID blogId) {
+        PublishBlogPost publishBlogPost = new PublishBlogPost(blogId, new Date());
+        commandGateway.send(publishBlogPost);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

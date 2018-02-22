@@ -4,15 +4,18 @@ import lombok.NoArgsConstructor;
 import nl.martijnklene.api.application.command.ChangeBlogPost;
 import nl.martijnklene.api.application.command.CreateBlogPost;
 import nl.martijnklene.api.application.command.DeleteBlogPost;
+import nl.martijnklene.api.application.command.PublishBlogPost;
 import nl.martijnklene.api.domain.event.BlogPostChanged;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
 import nl.martijnklene.api.domain.event.BlogPostDeleted;
+import nl.martijnklene.api.domain.event.BlogPostPublished;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
@@ -27,6 +30,7 @@ public class BlogPost implements Serializable{
     private String content;
     private String tags;
     private String author;
+    private Date publishedAt;
 
     @SuppressWarnings("all")
     @CommandHandler
@@ -76,5 +80,15 @@ public class BlogPost implements Serializable{
     @EventSourcingHandler
     public void blogPostDeleted(BlogPostDeleted blogPostDeleted) {
         markDeleted();
+    }
+
+    @CommandHandler
+    public void publish(PublishBlogPost publishBlogPost) {
+        apply(new BlogPostPublished(publishBlogPost.getId(), publishBlogPost.getPublishedAt()));
+    }
+
+    @EventSourcingHandler
+    public void publish(BlogPostPublished blogPostPublished) {
+        this.publishedAt = blogPostPublished.getDate();
     }
 }

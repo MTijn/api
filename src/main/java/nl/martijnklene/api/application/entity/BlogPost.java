@@ -3,6 +3,7 @@ package nl.martijnklene.api.application.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +14,7 @@ public class BlogPost implements Serializable{
     private String content;
     private String tags;
     private String author;
+    private Date publishedAt;
 
     public UUID getId() {
         return id;
@@ -52,5 +54,13 @@ public class BlogPost implements Serializable{
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Date getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
     }
 }

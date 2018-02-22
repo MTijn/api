@@ -5,6 +5,7 @@ import nl.martijnklene.api.application.repository.BlogPostRepository;
 import nl.martijnklene.api.domain.event.BlogPostChanged;
 import nl.martijnklene.api.domain.event.BlogPostCreated;
 import nl.martijnklene.api.domain.event.BlogPostDeleted;
+import nl.martijnklene.api.domain.event.BlogPostPublished;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,12 @@ public class BlogPostProjector {
     public void on(BlogPostDeleted blogPostDeleted) {
         BlogPost blogPost = blogPostRepository.findOneById(blogPostDeleted.getId());
         blogPostRepository.delete(blogPost);
+    }
+
+    @EventHandler
+    public void on(BlogPostPublished blogPostPublished) {
+        BlogPost blogPost = blogPostRepository.findOneById(blogPostPublished.getId());
+        blogPost.setPublishedAt(blogPostPublished.getDate());
+        blogPostRepository.save(blogPost);
     }
 }
