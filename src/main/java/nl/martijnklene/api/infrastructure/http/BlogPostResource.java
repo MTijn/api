@@ -13,8 +13,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -47,6 +49,21 @@ public class BlogPostResource {
 
     @ApiResponses(
             @ApiResponse(
+                    code = 200,
+                    message = "Show blog posts with an offset and limit"
+            )
+    )
+    @RequestMapping(
+            value = "/{from}/{limit}",
+            produces = APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public ResponseEntity viewWithOffSet(@PathVariable Integer from, @PathVariable Integer limit) {
+        return ResponseEntity.ok(blogPostRepository.findWithOffset(from, limit));
+    }
+
+    @ApiResponses(
+            @ApiResponse(
                     code = 201,
                     message = "Blog post created"
             )
@@ -67,7 +84,12 @@ public class BlogPostResource {
         );
 
         commandGateway.send(blogPost);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
     @ApiResponses({
@@ -89,7 +111,7 @@ public class BlogPostResource {
         BlogPost blogPost;
         try {
             blogPost = blogPostRepository.findOneById(blogId);
-        } catch (Exception $noResult) {
+        } catch (Exception noResult) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(blogPost, HttpStatus.OK);

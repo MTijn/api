@@ -14,8 +14,14 @@ public class BlogPostJpaRepository implements BlogPostRepository{
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     public void save(BlogPost blogPost) {
         entityManager.merge(blogPost);
+    }
+
+    @Override
+    public void delete(BlogPost blogPost) {
+        entityManager.remove(blogPost);
     }
 
     @Override
@@ -37,7 +43,11 @@ public class BlogPostJpaRepository implements BlogPostRepository{
         return entityManager.createQuery("SELECT b FROM BlogPost b", BlogPost.class).getResultList();
     }
 
-    public void delete(BlogPost blogPost) {
-        entityManager.remove(blogPost);
+    public Collection<BlogPost> findWithOffset(Integer from, Integer limit) {
+        return entityManager.createQuery("SELECT b FROM BlogPost b", BlogPost.class)
+                .setFirstResult(from)
+                .setMaxResults(limit)
+                .getResultList();
     }
+
 }

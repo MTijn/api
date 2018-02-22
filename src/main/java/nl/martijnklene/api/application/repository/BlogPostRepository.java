@@ -7,8 +7,9 @@ import java.util.UUID;
 
 public interface BlogPostRepository {
     void save(BlogPost blogPost);
+    void delete(BlogPost blogPost);
     BlogPost findOneById(UUID id);
     BlogPost findOneByTitle(String title);
     Collection<BlogPost> findAll();
-    void delete(BlogPost blogPost);
+    Collection<BlogPost> findWithOffset(Integer from, Integer limit);
 }
