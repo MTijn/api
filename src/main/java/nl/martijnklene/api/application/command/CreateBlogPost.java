@@ -1,5 +1,6 @@
 package nl.martijnklene.api.application.command;
 
+import nl.martijnklene.api.infrastructure.annotation.UniqueTitle;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
