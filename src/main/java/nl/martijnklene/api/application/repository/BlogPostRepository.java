@@ -9,7 +9,7 @@ public interface BlogPostRepository {
     void save(BlogPost blogPost);
     void delete(BlogPost blogPost);
     BlogPost findOneById(UUID id);
-    BlogPost findOneByTitle(String title);
+    Collection<BlogPost> findByTitle(String title);
     Collection<BlogPost> findAll();
     Collection<BlogPost> findWithOffset(Integer from, Integer limit);
 }

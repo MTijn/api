@@ -32,10 +32,10 @@ public class BlogPostJpaRepository implements BlogPostRepository{
     }
 
     @Override
-    public BlogPost findOneByTitle(String title) {
+    public Collection<BlogPost> findByTitle(String title) {
         return entityManager.createQuery("SELECT b FROM BlogPost b WHERE title = :blogTitle", BlogPost.class)
                 .setParameter("blogTitle", title)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override

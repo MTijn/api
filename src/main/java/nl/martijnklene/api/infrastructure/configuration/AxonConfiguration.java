@@ -16,6 +16,7 @@ public class AxonConfiguration {
     public CommandBus localSegment(TransactionManager transactionManager) {
         AsynchronousCommandBus asynchronousCommandBus = new AsynchronousCommandBus();
         asynchronousCommandBus.registerDispatchInterceptor(new BeanValidationInterceptor<>());
+        asynchronousCommandBus.registerHandlerInterceptor(new BeanValidationInterceptor<>());
         asynchronousCommandBus.registerHandlerInterceptor(new TransactionManagingInterceptor<>(transactionManager));
 
         return asynchronousCommandBus;
