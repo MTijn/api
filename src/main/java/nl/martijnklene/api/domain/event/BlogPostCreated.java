@@ -1,5 +1,6 @@
 package nl.martijnklene.api.domain.event;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class BlogPostCreated {
@@ -8,13 +9,15 @@ public class BlogPostCreated {
     private String content;
     private String tags;
     private String author;
+    private Date createdAt;
 
-    public BlogPostCreated(UUID id, String title, String content, String tags, String author) {
+    public BlogPostCreated(UUID id, String title, String content, String tags, String author, Date createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.tags = tags;
         this.author = author;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -35,5 +38,9 @@ public class BlogPostCreated {
 
     public String getAuthor() {
         return author;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }

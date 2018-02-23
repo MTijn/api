@@ -3,6 +3,7 @@ package nl.martijnklene.api.application.command;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class CreateBlogPostTest {
@@ -11,13 +12,15 @@ public class CreateBlogPostTest {
     private final String content = "content";
     private final String tags = "tags";
     private final String author = "author";
+    private final Date date = new Date();
 
     private final CreateBlogPost createBlogPost = new CreateBlogPost(
             id,
             title,
             content,
             tags,
-            author
+            author,
+            date
     );
     @Test
     public void testCreatingBlogPosts() {
@@ -26,5 +29,6 @@ public class CreateBlogPostTest {
         Assert.assertSame(content, createBlogPost.getContent());
         Assert.assertSame(tags, createBlogPost.getTags());
         Assert.assertSame(author, createBlogPost.getAuthor());
+        Assert.assertSame(date, createBlogPost.getCreatedAt());
     }
 }

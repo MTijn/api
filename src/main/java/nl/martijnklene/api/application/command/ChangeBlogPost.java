@@ -1,6 +1,5 @@
 package nl.martijnklene.api.application.command;
 
-import nl.martijnklene.api.infrastructure.annotation.UniqueTitle;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,7 +9,6 @@ import java.util.UUID;
 public class ChangeBlogPost {
     @TargetAggregateIdentifier
     private UUID id;
-    @UniqueTitle
     @NotEmpty
     private String title;
     @NotEmpty

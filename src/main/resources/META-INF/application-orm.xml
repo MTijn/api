@@ -21,6 +21,9 @@
             <basic name="publishedAt">
                 <column name="published_at" />
             </basic>
+            <basic name="createdAt">
+                <column name="created_at" />
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -31,6 +31,7 @@ public class BlogPost implements Serializable{
     private String tags;
     private String author;
     private Date publishedAt;
+    private Date createdAt;
 
     @SuppressWarnings("all")
     @CommandHandler
@@ -40,7 +41,8 @@ public class BlogPost implements Serializable{
                 createBlogPost.getTitle(),
                 createBlogPost.getContent(),
                 createBlogPost.getTags(),
-                createBlogPost.getAuthor()
+                createBlogPost.getAuthor(),
+                createBlogPost.getCreatedAt()
         ));
     }
 
@@ -51,6 +53,7 @@ public class BlogPost implements Serializable{
         this.content = blogPostCreated.getContent();
         this.tags = blogPostCreated.getTags();
         this.author = blogPostCreated.getAuthor();
+        this.createdAt = blogPostCreated.getCreatedAt();
     }
 
     @CommandHandler

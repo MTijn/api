@@ -29,6 +29,7 @@ public class BlogPostProjector {
         blogPost.setContent(blogPostCreated.getContent());
         blogPost.setTags(blogPostCreated.getTags());
         blogPost.setAuthor(blogPostCreated.getAuthor());
+        blogPost.setCreatedAt(blogPostCreated.getCreatedAt());
         blogPostRepository.save(blogPost);
     }
 

@@ -44,7 +44,7 @@ public class BlogPostJpaRepository implements BlogPostRepository{
     }
 
     public Collection<BlogPost> findWithOffset(Integer from, Integer limit) {
-        return entityManager.createQuery("SELECT b FROM BlogPost b", BlogPost.class)
+        return entityManager.createQuery("SELECT b FROM BlogPost b ORDER BY b.createdAt", BlogPost.class)
                 .setFirstResult(from)
                 .setMaxResults(limit)
                 .getResultList();

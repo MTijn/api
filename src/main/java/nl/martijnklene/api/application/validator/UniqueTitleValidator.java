@@ -17,11 +17,15 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitle, St
 
     @Override
     public void initialize(UniqueTitle uniqueTitle) {
-
     }
 
     @Override
     public boolean isValid(String title, ConstraintValidatorContext constraintValidatorContext) {
-        return (null == this.blogPostRepository.findOneByTitle(title));
+        try {
+            this.blogPostRepository.findOneByTitle(title);
+        } catch (Exception exception) {
+            return true;
+        }
+        return false;
     }
 }

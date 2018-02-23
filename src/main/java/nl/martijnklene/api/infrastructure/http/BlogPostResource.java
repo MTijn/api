@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.NoResultException;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
@@ -39,29 +39,19 @@ public class BlogPostResource {
     @ApiResponses(
             @ApiResponse(
                     code = 200,
-                    message = "Show all blog posts"
+                    message = "Show limited amount of blog posts"
             )
     )
     @RequestMapping(
+            params = {"from", "limit"},
             produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET
     )
-    public ResponseEntity viewAll() {
-        return ResponseEntity.ok(blogPostRepository.findAll());
-    }
 
-    @ApiResponses(
-            @ApiResponse(
-                    code = 200,
-                    message = "Show blog posts with an offset and limit"
-            )
-    )
-    @RequestMapping(
-            value = "/{from}/{limit}",
-            produces = APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET
-    )
-    public ResponseEntity viewWithOffSet(@PathVariable Integer from, @PathVariable Integer limit) {
+    public ResponseEntity viewWithOffSet(
+            @RequestParam(defaultValue = "1") Integer from,
+            @RequestParam(defaultValue = "0") Integer limit
+    ) {
         return ResponseEntity.ok(blogPostRepository.findWithOffset(from, limit));
     }
 
@@ -83,7 +73,8 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                blogPayload.getAuthor()
+                blogPayload.getAuthor(),
+                new Date()
         );
 
         commandGateway.send(blogPost);
@@ -169,5 +160,26 @@ public class BlogPostResource {
 
         commandGateway.send(changeBlogPost);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/publish/{blogId}",
+            method = RequestMethod.PATCH
+    )
+    public ResponseEntity publishBlogPost(@PathVariable UUID blogId) {
+        BlogPost blogPost;
+        try {
+            blogPost = blogPostRepository.findOneById(blogId);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        PublishBlogPost publishBlogPost = new PublishBlogPost(
+                blogId,
+                new Date()
+        );
+
+        commandGateway.send(publishBlogPost);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

@@ -15,6 +15,7 @@ public class BlogPost implements Serializable{
     private String tags;
     private String author;
     private Date publishedAt;
+    private Date createdAt;
 
     public UUID getId() {
         return id;
@@ -62,5 +63,13 @@ public class BlogPost implements Serializable{
 
     public void setPublishedAt(Date publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
