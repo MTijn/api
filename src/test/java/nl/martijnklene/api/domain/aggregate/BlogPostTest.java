@@ -20,6 +20,10 @@ public class BlogPostTest {
     private FixtureConfiguration<BlogPost> fixture;
 
     private final UUID createdId = UUID.randomUUID();
+    private final String title = "title";
+    private final String content = "content";
+    private final String tags = "tags";
+    private final String author = "test@test.nl";
     private final Date date = new Date();
 
     @Before
@@ -32,18 +36,18 @@ public class BlogPostTest {
         fixture.given()
             .when(new CreateBlogPost(
                 createdId,
-                "test",
-                "test",
-                "test",
-                "test@test.nl",
+                title,
+                content,
+                tags,
+                author,
                 date
             )).expectSuccessfulHandlerExecution()
             .expectEvents(new BlogPostCreated(
                 createdId,
-                "test",
-                "test",
-                "test",
-                "test@test.nl",
+                title,
+                content,
+                tags,
+                author,
                 date
             )
         );
@@ -53,25 +57,25 @@ public class BlogPostTest {
     public void testChangeBlogPost() {
         fixture
             .given(new BlogPostCreated(
-                    createdId,
-                    "test",
-                    "test",
-                    "test",
-                    "test@test.nl",
-                    date
+                createdId,
+                title,
+                content,
+                tags,
+                author,
+                date
             )).when(new ChangeBlogPost(
                 createdId,
-                "test 2",
-                "test",
-                "test",
-                "test@test.nl"
+                title + " 2" ,
+                content,
+                tags,
+                author
             )).expectSuccessfulHandlerExecution()
             .expectEvents(new BlogPostChanged(
                 createdId,
-                "test 2",
-                "test",
-                "test",
-                "test@test.nl"
+                title + " 2" ,
+                content,
+                tags,
+                author
             ));
     }
 
@@ -80,10 +84,10 @@ public class BlogPostTest {
         fixture
             .given(new BlogPostCreated(
                 createdId,
-                "test",
-                "test",
-                "test",
-                "test@test.nl",
+                title,
+                content,
+                tags,
+                author,
                 date
             ))
             .when(new DeleteBlogPost(createdId))
@@ -96,10 +100,10 @@ public class BlogPostTest {
         fixture
             .given(new BlogPostCreated(
                 createdId,
-                "test",
-                "test",
-                "test",
-                "test@test.nl",
+                title,
+                content,
+                tags,
+                author,
                 date
             ))
             .when(new PublishBlogPost(createdId, date))
