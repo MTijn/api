@@ -1,0 +1,19 @@
+version: "3.1"
+services:
+  web:
+    image: mtijnnl/api:snapshot
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      - internal
+  postgres:
+    image: postgres
+    volumes:
+      - .:/var/lib/postgresql
+    networks:
+      - internal
+
+networks:
+  internal:
