@@ -1,8 +1,6 @@
 package nl.martijnklene.api.infrastructure.http;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import nl.martijnklene.api.application.command.ChangeBlogPost;
 import nl.martijnklene.api.application.command.CreateBlogPost;
 import nl.martijnklene.api.application.command.DeleteBlogPost;
@@ -37,6 +35,22 @@ public class BlogPostResource {
     }
 
     @ApiResponses(
+            @ApiResponse(code = 200, message = "show all items")
+    )
+    @RequestMapping(
+            produces = APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public ResponseEntity viewAll() {
+
+        return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation(
+            value = "Return limited results"
+    )
+    @ApiParam(value = "from")
+    @ApiResponses(
             @ApiResponse(
                     code = 200,
                     message = "Show limited amount of blog posts"
@@ -47,7 +61,6 @@ public class BlogPostResource {
             produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET
     )
-
     public ResponseEntity viewWithOffSet(
             @RequestParam(defaultValue = "1") Integer from,
             @RequestParam(defaultValue = "0") Integer limit
