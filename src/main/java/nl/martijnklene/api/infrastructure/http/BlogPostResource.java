@@ -38,6 +38,7 @@ public class BlogPostResource {
             @ApiResponse(code = 200, message = "show all items")
     )
     @RequestMapping(
+            value = "/all",
             produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET
     )
@@ -49,7 +50,6 @@ public class BlogPostResource {
     @ApiOperation(
             value = "Return limited results"
     )
-    @ApiParam(value = "from")
     @ApiResponses(
             @ApiResponse(
                     code = 200,
