@@ -29,6 +29,6 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
-      - run: mvn clean package docker:build -DpushImage
+      - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
