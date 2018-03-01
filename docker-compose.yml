@@ -12,7 +12,7 @@ services:
     image: postgres
     volumes:
       - ./docker/postgres:/docker-entrypoint-initdb.d/
-      - .:/var/lib/postgresql
+      - ./database:/var/lib/postgresql/data
     networks:
       - internal
 
