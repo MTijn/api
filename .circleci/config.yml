@@ -31,7 +31,7 @@ jobs:
       - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
-  image:
+  publish:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
@@ -44,7 +44,7 @@ workflows:
     jobs:
       - build:
           context: docker
-      - image:
+      - publish:
           requires:
             - build
         context: docker
