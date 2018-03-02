@@ -31,10 +31,6 @@ jobs:
       - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
-  publish:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    steps:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker push mtijnnl/api
 
@@ -43,8 +39,4 @@ workflows:
   build:
     jobs:
       - build:
-          context: Api
-      - publish:
-          requires:
-            - build
           context: docker
