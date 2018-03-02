@@ -33,6 +33,8 @@ jobs:
           path: target/surefire-reports
 
   publish:
+    docker:
+      - image: circleci/openjdk:8-jdk
     steps:
       - run docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run docker push mtijnnl/api
