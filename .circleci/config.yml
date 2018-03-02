@@ -31,6 +31,8 @@ jobs:
       - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
+  image:
+    steps:
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker push mtijnnl/api
 
