@@ -12,6 +12,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -79,6 +80,7 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload) {
         UUID id = UUID.randomUUID();
 

@@ -18,7 +18,6 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - setup_remote_docker
@@ -32,3 +31,18 @@ jobs:
       - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
+
+  publish:
+    steps:
+      - run docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run docker push mtijnnl/api
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+  publish:
+    jobs:
+      - publish:
+          context: docker
