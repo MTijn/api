@@ -45,6 +45,6 @@ workflows:
       - build:
           context: docker
       - image:
-        requires:
-          - build
+          requires:
+            - build
         context: docker
