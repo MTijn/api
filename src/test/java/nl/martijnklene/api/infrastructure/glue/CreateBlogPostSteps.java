@@ -36,7 +36,7 @@ public class CreateBlogPostSteps extends SpringIntegrationTest {
                     blogPayload.getAuthor(),
                     createdDate
             );
-            commandGateway.send(createBlogPost);
+            commandGateway.send(createBlogPost).join();
         }
     }
 
