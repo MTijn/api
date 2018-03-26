@@ -53,7 +53,8 @@ public class KeycloakSecurityConfigurer extends KeycloakWebSecurityConfigurerAda
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest()
+                .authenticated();
     }
 
     @Bean
