@@ -26,11 +26,4 @@ public class BlogPayloadTest {
         blogPayload.setTags(tags);
         Assert.assertSame(tags, blogPayload.getTags());
     }
-
-    @Test
-    public void getAuthor() {
-        String author = "author";
-        blogPayload.setAuthor(author);
-        Assert.assertSame(author, blogPayload.getAuthor());
-    }
 }

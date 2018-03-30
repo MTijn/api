@@ -33,7 +33,7 @@ public class CreateBlogPostSteps extends SpringIntegrationTest {
                     blogPayload.getTitle(),
                     blogPayload.getContent(),
                     blogPayload.getTags(),
-                    blogPayload.getAuthor(),
+                    "test@test.nl",
                     createdDate
             );
             commandGateway.send(createBlogPost).join();

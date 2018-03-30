@@ -12,8 +12,6 @@ public class BlogPayload {
     private String content;
     @NotEmpty
     private String tags;
-    @Email
-    private String author;
 
     public String getTitle() {
         return title;
@@ -37,13 +35,5 @@ public class BlogPayload {
 
     public void setTags(String tags) {
         this.tags = tags;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 }

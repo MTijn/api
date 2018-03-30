@@ -11,14 +11,12 @@ import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.net.URI;
+import java.security.Principal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,7 +29,10 @@ public class BlogPostResource {
     private CommandGateway commandGateway;
     private BlogPostRepository blogPostRepository;
 
-    public BlogPostResource(CommandGateway commandGateway, BlogPostRepository blogPostRepository) {
+    public BlogPostResource(
+            CommandGateway commandGateway,
+            BlogPostRepository blogPostRepository
+    ) {
         this.commandGateway = commandGateway;
         this.blogPostRepository = blogPostRepository;
     }
@@ -80,8 +81,7 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload) {
+    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload, Principal principal) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(
@@ -89,7 +89,7 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                blogPayload.getAuthor(),
+                principal.getName(),
                 new Date()
         );
 
@@ -165,13 +165,13 @@ public class BlogPostResource {
             value = "/{blogId}",
             method = RequestMethod.PUT
     )
-    public ResponseEntity changeBlogPost(@PathVariable UUID blogId, @Valid @RequestBody BlogPayload blogPayload) {
+    public ResponseEntity changeBlogPost(@PathVariable UUID blogId, @Valid @RequestBody BlogPayload blogPayload, Principal principal) {
         ChangeBlogPost changeBlogPost = new ChangeBlogPost(
                 blogId,
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                blogPayload.getAuthor()
+                principal.getName()
         );
 
         commandGateway.send(changeBlogPost);
