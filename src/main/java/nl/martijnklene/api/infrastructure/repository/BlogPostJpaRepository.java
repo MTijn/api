@@ -50,4 +50,10 @@ public class BlogPostJpaRepository implements BlogPostRepository{
                 .getResultList();
     }
 
+    @Override
+    public BlogPost findLastPublishedBlogPost() {
+        return entityManager.createQuery("SELECT b FROM BlogPost b WHERE b.publishedAt IS NOT NULL ORDER BY b.createdAt", BlogPost.class)
+                .setMaxResults(1)
+                .getSingleResult();
+    }
 }

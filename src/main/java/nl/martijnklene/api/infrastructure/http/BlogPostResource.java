@@ -65,10 +65,33 @@ public class BlogPostResource {
             method = RequestMethod.GET
     )
     public ResponseEntity viewWithOffSet(
-            @RequestParam(defaultValue = "1") Integer from,
-            @RequestParam(defaultValue = "0") Integer limit
+            @RequestParam(defaultValue = "0") Integer from,
+            @RequestParam(defaultValue = "1") Integer limit
     ) {
         return ResponseEntity.ok(blogPostRepository.findWithOffset(from, limit));
+    }
+
+    @ApiOperation(
+            value = "Return last published blog post"
+    )
+    @ApiResponses(
+            @ApiResponse(
+                    code = 200,
+                    message = "Show last published blogpost"
+            )
+    )
+    @RequestMapping(
+            value = "/last",
+            produces = APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public ResponseEntity viewLastItem() {
+        BlogPost blogPost = null;
+        try {
+            blogPost = blogPostRepository.findLastPublishedBlogPost();
+        } catch (Exception noResult) {
+        }
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
     }
 
     @ApiResponses(
