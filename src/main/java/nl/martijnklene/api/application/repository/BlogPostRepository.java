@@ -12,4 +12,5 @@ public interface BlogPostRepository {
     Collection<BlogPost> findByTitle(String title);
     Collection<BlogPost> findAll();
     Collection<BlogPost> findWithOffset(Integer from, Integer limit);
+    BlogPost findLastPublished();
 }

@@ -38,6 +38,7 @@ public class CorsConfig extends OncePerRequestFilter{
 
         response.addHeader("Access-Control-Allow-Origin", allowOrigin);
         response.addHeader("Access-Control-Allow-Methods", allowMethods);
+        response.addHeader("Access-Control-Allow-Headers", "AUTHORIZATION");
 
         filterChain.doFilter(request, response);
     }

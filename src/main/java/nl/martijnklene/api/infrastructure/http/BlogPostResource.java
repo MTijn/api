@@ -50,6 +50,18 @@ public class BlogPostResource {
         return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
     }
 
+    @ApiResponses(
+            @ApiResponse(code = 200, message = "Show last published item")
+    )
+    @RequestMapping(
+            value = "/last",
+            produces = APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET
+    )
+    public ResponseEntity viewLastPublished() {
+        return new ResponseEntity<>(blogPostRepository.findLastPublished(), HttpStatus.OK);
+    }
+
     @ApiOperation(
             value = "Return limited results"
     )
