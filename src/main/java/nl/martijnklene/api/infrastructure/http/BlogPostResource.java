@@ -101,7 +101,7 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                principal.getName(),
+                "test@test.nl",
                 new Date()
         );
 
