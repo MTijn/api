@@ -2,13 +2,16 @@ package nl.martijnklene.api.application.command;
 
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.UUID;
 
 public class CreateBlogPost {
     @TargetAggregateIdentifier
     private UUID id;
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String content;
     private String tags;
     private String author;
