@@ -36,7 +36,7 @@ public class SwaggerConfig {
     }
 
     private OAuth securitySchema() {
-        GrantType grantType = new ResourceOwnerPasswordCredentialsGrant("");
+        GrantType grantType = new ImplicitGrant(new LoginEndpoint("test"), "test");
         return new OAuth("operator_auth", newArrayList(), newArrayList(grantType));
     }
 }
