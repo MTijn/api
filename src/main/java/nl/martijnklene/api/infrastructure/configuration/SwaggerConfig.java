@@ -1,5 +1,6 @@
 package nl.martijnklene.api.infrastructure.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -16,11 +17,22 @@ import static com.google.common.collect.Lists.newArrayList;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+    @Value("${openid.clientId}")
+    private String clientId;
+    @Value("${openid.clientSecret}")
+    private String clientSecret;
+    @Value("${openid.tokenUri}")
+    private String tokenUri;
+    @Value("${openid.authorisationUri}")
+    private String authorisationUri;
+    @Value("${openid.redirectUri}")
+    private String redirectUri;
+
     @Bean
     public Docket api() {
         SecurityReference securityReference = SecurityReference.builder()
                 .scopes(new AuthorizationScope[0])
-                .reference("operator_auth")
+                .reference("blog_auth")
                 .build();
 
         ArrayList<SecurityContext> securityContexts = newArrayList(
@@ -36,7 +48,13 @@ public class SwaggerConfig {
     }
 
     private OAuth securitySchema() {
-        GrantType grantType = new ImplicitGrant(new LoginEndpoint("test"), "test");
-        return new OAuth("operator_auth", newArrayList(), newArrayList(grantType));
+        TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(
+                this.authorisationUri,
+                this.clientId,
+                this.clientSecret
+        );
+        TokenEndpoint tokenEndpoint = new TokenEndpoint(tokenUri, "blog");
+        GrantType grantType = new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint);
+        return new OAuth("blog_auth", newArrayList(), newArrayList(grantType));
     }
 }
