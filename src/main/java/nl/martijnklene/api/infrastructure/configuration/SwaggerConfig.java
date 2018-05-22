@@ -37,8 +37,9 @@ public class SwaggerConfig {
 
         ArrayList<SecurityContext> securityContexts = newArrayList(
                 SecurityContext.builder()
-                        .securityReferences(newArrayList(securityReference)
-                        ).build());
+                        .securityReferences(newArrayList(securityReference))
+                        .build()
+        );
         return new Docket(DocumentationType.SWAGGER_2)
                 .securitySchemes(newArrayList(securitySchema()))
                 .securityContexts(securityContexts)
