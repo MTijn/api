@@ -54,6 +54,11 @@
 			<version>RELEASE</version>
 		</dependency>
 		<dependency>
+		<groupId>com.auth0</groupId>
+		<artifactId>jwks-rsa</artifactId>
+		<version>0.4.0</version>
+	</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
