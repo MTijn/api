@@ -93,7 +93,7 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload, Principal principal) {
+    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(
@@ -101,7 +101,7 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                "test@test.nl",
+                "",
                 new Date()
         );
 
