@@ -93,7 +93,7 @@ public class BlogPostResource {
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
-    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload) {
+    public ResponseEntity create(@Valid @RequestBody BlogPayload blogPayload, Principal principal) {
         UUID id = UUID.randomUUID();
 
         CreateBlogPost blogPost = new CreateBlogPost(
@@ -101,7 +101,7 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                "",
+                principal.getName(),
                 new Date()
         );
 
@@ -190,6 +190,12 @@ public class BlogPostResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiResponses({
+            @ApiResponse(
+                    code = 202,
+                    message = "Publishing accepted"
+            )
+    })
     @RequestMapping(
             value = "/publish/{blogId}",
             method = RequestMethod.PATCH
