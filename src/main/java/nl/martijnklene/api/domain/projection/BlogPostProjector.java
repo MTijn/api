@@ -35,7 +35,7 @@ public class BlogPostProjector {
 
     @EventHandler
     public void on(BlogPostChanged blogPostChanged) {
-        BlogPost blogPost = new BlogPost();
+        BlogPost blogPost = blogPostRepository.findOneById(blogPostChanged.getId());
         blogPost.setId(blogPostChanged.getId());
         blogPost.setTitle(blogPostChanged.getTitle());
         blogPost.setContent(blogPostChanged.getContent());

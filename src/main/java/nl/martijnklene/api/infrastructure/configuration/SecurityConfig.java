@@ -50,10 +50,10 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST).hasRole("admin")
-                .antMatchers(HttpMethod.PUT).hasRole("admin")
-                .antMatchers(HttpMethod.PATCH).hasRole("admin")
-                .antMatchers(HttpMethod.DELETE).hasRole("admin")
+                .antMatchers(HttpMethod.POST).authenticated()
+                .antMatchers(HttpMethod.PUT).authenticated()
+                .antMatchers(HttpMethod.PATCH).authenticated()
+                .antMatchers(HttpMethod.DELETE).authenticated()
                 .anyRequest()
                 .permitAll().and().csrf().disable();
 
