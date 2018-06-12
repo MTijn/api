@@ -17,10 +17,8 @@ import static com.google.common.collect.Lists.newArrayList;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    @Value("${openid.clientId}")
+    @Value("${keycloak.realm}")
     private String clientId;
-    @Value("${openid.clientSecret}")
-    private String clientSecret;
     @Value("${openid.tokenUri}")
     private String tokenUri;
     @Value("${openid.authorisationUri}")
@@ -52,7 +50,7 @@ public class SwaggerConfig {
         TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(
                 this.authorisationUri,
                 this.clientId,
-                this.clientSecret
+                ""
         );
         TokenEndpoint tokenEndpoint = new TokenEndpoint(tokenUri, "blog");
         GrantType grantType = new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint);
