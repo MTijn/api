@@ -40,7 +40,8 @@ public class BlogPostJpaRepository implements BlogPostRepository{
 
     @Override
     public Collection<BlogPost> findAll() {
-        return entityManager.createQuery("SELECT b FROM BlogPost b", BlogPost.class).getResultList();
+        return entityManager.createQuery("SELECT b FROM BlogPost b ORDER BY b.createdAt DESC", BlogPost.class)
+                .getResultList();
     }
 
     public Collection<BlogPost> findWithOffset(Integer from, Integer limit) {
@@ -52,7 +53,8 @@ public class BlogPostJpaRepository implements BlogPostRepository{
 
     @Override
     public BlogPost findLastPublished() {
-        return entityManager.createQuery("SELECT b FROM BlogPost b WHERE b.publishedAt IS NOT NULL ORDER BY b.createdAt DESC", BlogPost.class)
+        return entityManager.createQuery("SELECT b FROM BlogPost b WHERE b.publishedAt IS NOT NULL ORDER BY b.publishedAt DESC", BlogPost.class)
+                .setMaxResults(1)
                 .getSingleResult();
     }
 }

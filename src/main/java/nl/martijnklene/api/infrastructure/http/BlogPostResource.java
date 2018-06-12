@@ -101,7 +101,7 @@ public class BlogPostResource {
                 blogPayload.getTitle(),
                 blogPayload.getContent(),
                 blogPayload.getTags(),
-                "test@test.nl",
+                principal.getName(),
                 new Date()
         );
 
@@ -190,6 +190,12 @@ public class BlogPostResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiResponses({
+            @ApiResponse(
+                    code = 202,
+                    message = "Publishing accepted"
+            )
+    })
     @RequestMapping(
             value = "/publish/{blogId}",
             method = RequestMethod.PATCH
