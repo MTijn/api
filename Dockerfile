@@ -1,4 +1,4 @@
-FROM openjdk:10-jre
+FROM circleci/openjdk:9-jdk
 MAINTAINER Martijn Klene <schapie.nl@gmail.com>
 
 ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/api/api.jar"]
