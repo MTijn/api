@@ -1,5 +1,8 @@
 version: "3.6"
 services:
+  web:
+    volumes:
+      - ./config:/usr/share/api/config
   postgres:
     ports:
       - 5432:5432

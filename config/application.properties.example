@@ -1,0 +1,16 @@
+spring.datasource.url=localhost
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+openid.clientId=client
+openid.tokenUri=uri
+openid.authorisationUri=uri
+openid.redirectUri=uri
+
+keycloak.realm=client
+keycloak.auth-server-url=url
+keycloak.ssl-required=true|false
+keycloak.resource=resource
+keycloak.public-client=true
+keycloak.confidential-port=0
+keycloak.principal-attribute=email

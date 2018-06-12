@@ -1,33 +1,13 @@
 version: "3.6"
 services:
   web:
-    image: mtijnnl/api:1.0
+    image: registry.martijnklene.nl/mtijnnl/api:latest
     depends_on:
       - postgres
     networks:
       - traefik_web
-    environment:
-      database.url: /run/secrets/database.url
-      database.username: /run/secrets/database.username
-      database.password: /run/secrets/database.password
-      openid.client: /run/secrets/openid.client
-      openid.tokenUri: /run/secrets/openid.tokenUri
-      openid.authorisationUri: /run/secrets/openid.authorisationUri
-      openid.redirectUri: /run/secrets/openid.redirectUri
-      keycloak.url: /run/secrets/keycloak.url
-      keycloak.ssl-required: /run/secrets/keycloak.ssl-required
-      keycloak.resource: /run/secrets/keycloak.resource
-    secrets:
-      - database.url
-      - database.username
-      - database.password
-      - openid.client
-      - openid.tokenUri
-      - openid.authorisationUri
-      - openid.redirectUri
-      - keycloak.url
-      - keycloak.ssl-required
-      - keycloak.resource
+    volumes:
+      - /opt/api/config:/usr/share/api/config
   postgres:
     environment:
       POSTGRES_PASSWORD: /run/secrets/database.password
@@ -41,23 +21,7 @@ networks:
     external: true
 
 secrets:
-  database.url:
-    external: true
   database.username:
     external: true
   database.password:
-    external: true
-  openid.client:
-    external: true
-  openid.tokenUri:
-    external: true
-  openid.authorisationUri:
-    external: true
-  openid.redirectUri:
-    external: true
-  keycloak.url:
-    external: true
-  keycloak.ssl-required:
-    external: true
-  keycloak.resource:
     external: true
