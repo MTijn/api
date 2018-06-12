@@ -32,7 +32,7 @@ jobs:
       - store_test_results:
           path: target/surefire-reports
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push mtijnnl/api
+      - run: docker push mtijnnl/api:latest
 
 workflows:
   version: 2
