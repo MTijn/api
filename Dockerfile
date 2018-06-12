@@ -1,4 +1,4 @@
-FROM openjdk:alpine
+FROM openjdk:10-jre
 MAINTAINER Martijn Klene <schapie.nl@gmail.com>
 
 ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/api/api.jar"]
