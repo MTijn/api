@@ -31,8 +31,8 @@ jobs:
       - run: mvn -s ~/src/.circleci/settings.xml clean package
       - store_test_results:
           path: target/surefire-reports
-      - run: docker login registry.martijnklene.nl -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker push registry.martijnklene.nl/mtijnnl/api
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker push mtijnnl/api
 
 workflows:
   version: 2
