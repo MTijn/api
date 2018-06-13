@@ -2,6 +2,8 @@ FROM openjdk:8-alpine
 
 VOLUME /tmp
 
+EXPOSE 8080
+
 ENV JAVA_OPTS=""
 ENV APPLICATION_OPTS=""
 
