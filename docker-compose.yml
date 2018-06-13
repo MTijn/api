@@ -3,7 +3,9 @@ services:
   web:
     image: mtijnnl/api:snapshot
     ports:
-      - 8081:8080
+      - 8080:8080
+    volumes:
+      - ./config:/config
     depends_on:
       - postgres
     networks:

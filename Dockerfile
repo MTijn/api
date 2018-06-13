@@ -1,4 +1,4 @@
-FROM openjdk:10.0.1-slim
+FROM openjdk:8-alpine
 
 VOLUME /tmp
 
