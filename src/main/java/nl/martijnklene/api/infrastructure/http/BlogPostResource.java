@@ -59,7 +59,11 @@ public class BlogPostResource {
             method = RequestMethod.GET
     )
     public ResponseEntity viewLastPublished() {
-        return new ResponseEntity<>(blogPostRepository.findLastPublished(), HttpStatus.OK);
+        BlogPost blogPost = blogPostRepository.findLastPublished();
+        if (blogPost == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
     }
 
     @ApiOperation(

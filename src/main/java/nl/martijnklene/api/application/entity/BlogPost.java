@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-public class BlogPost implements Serializable{
+public class BlogPost implements Serializable {
     @Id
     private UUID id;
     private String title;
