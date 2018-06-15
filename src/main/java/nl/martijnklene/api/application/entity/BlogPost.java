@@ -1,14 +1,14 @@
 package nl.martijnklene.api.application.entity;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Table(name = "blog_post")
 public class BlogPost implements Serializable {
     @Id
     private UUID id;
