@@ -13,7 +13,6 @@ public class BlogPost implements Serializable {
     @Id
     private UUID id;
     private String title;
-    @Type(type = "text")
     private String content;
     private String tags;
     private String author;
