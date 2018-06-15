@@ -1,5 +1,7 @@
 package nl.martijnklene.api.application.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -11,6 +13,7 @@ public class BlogPost implements Serializable {
     @Id
     private UUID id;
     private String title;
+    @Type(type = "text")
     private String content;
     private String tags;
     private String author;
