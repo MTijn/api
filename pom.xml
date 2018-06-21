@@ -21,11 +21,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>1.9</java.version>
 		<axon-version>3.2.2</axon-version>
 		<dockerfile-maven-plugin.version>1.4.3</dockerfile-maven-plugin.version>
+        <glassfish.jaxb.version>2.3.0.1</glassfish.jaxb.version>
+        <javax.activation.version>1.1.1</javax.activation.version>
+        <org.json.version>20180130</org.json.version>
 
-		<database.url>jdbc:postgresql://database/martijnklene?currentSchema=public</database.url>
+        <database.url>jdbc:postgresql://database/martijnklene?currentSchema=public</database.url>
 		<database.username>postgres</database.username>
 		<database.password>postgres</database.password>
 
@@ -135,6 +138,23 @@
 			<artifactId>flyway-core</artifactId>
 			<version>5.0.7</version>
 		</dependency>
+
+        <!-- Java 9 -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${glassfish.jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>${javax.activation.version}</version>
+        </dependency>
 	</dependencies>
 
 	<dependencyManagement>
