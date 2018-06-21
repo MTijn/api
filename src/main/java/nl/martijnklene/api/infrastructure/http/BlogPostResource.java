@@ -1,13 +1,11 @@
 package nl.martijnklene.api.infrastructure.http;
 
 import io.swagger.annotations.*;
-import nl.martijnklene.api.application.command.ChangeBlogPost;
-import nl.martijnklene.api.application.command.CreateBlogPost;
-import nl.martijnklene.api.application.command.DeleteBlogPost;
-import nl.martijnklene.api.application.command.PublishBlogPost;
+import nl.martijnklene.api.application.command.*;
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
 import nl.martijnklene.api.infrastructure.model.swagger.BlogPayload;
+import nl.martijnklene.api.infrastructure.model.swagger.LegacyBlogPost;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -219,5 +217,38 @@ public class BlogPostResource {
 
         commandGateway.send(publishBlogPost);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @ApiResponses(
+            @ApiResponse(
+                    code = 201,
+                    message = "Legacy Blog post created"
+            )
+    )
+    @RequestMapping(
+            value = "/legacy",
+            consumes = APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST
+    )
+    public ResponseEntity postLegacyBlogPost(@Valid @RequestBody LegacyBlogPost legacyBlogPost, Principal principal) {
+        UUID id = UUID.randomUUID();
+
+        CreateLegacyBlogPost blogPost = new CreateLegacyBlogPost(
+                id,
+                legacyBlogPost.getTitle(),
+                legacyBlogPost.getContent(),
+                legacyBlogPost.getTags(),
+                principal.getName(),
+                legacyBlogPost.getCreatedAt(),
+                legacyBlogPost.getPublishedAt()
+        );
+
+        commandGateway.send(blogPost);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

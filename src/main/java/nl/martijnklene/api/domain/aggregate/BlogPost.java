@@ -1,14 +1,8 @@
 package nl.martijnklene.api.domain.aggregate;
 
 import lombok.NoArgsConstructor;
-import nl.martijnklene.api.application.command.ChangeBlogPost;
-import nl.martijnklene.api.application.command.CreateBlogPost;
-import nl.martijnklene.api.application.command.DeleteBlogPost;
-import nl.martijnklene.api.application.command.PublishBlogPost;
-import nl.martijnklene.api.domain.event.BlogPostChanged;
-import nl.martijnklene.api.domain.event.BlogPostCreated;
-import nl.martijnklene.api.domain.event.BlogPostDeleted;
-import nl.martijnklene.api.domain.event.BlogPostPublished;
+import nl.martijnklene.api.application.command.*;
+import nl.martijnklene.api.domain.event.*;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -46,6 +40,20 @@ public class BlogPost implements Serializable{
         ));
     }
 
+    @SuppressWarnings("all")
+    @CommandHandler
+    public BlogPost(CreateLegacyBlogPost createBlogPost) {
+        apply(new LegacyBlogPostCreated(
+                createBlogPost.getId(),
+                createBlogPost.getTitle(),
+                createBlogPost.getContent(),
+                createBlogPost.getTags(),
+                createBlogPost.getAuthor(),
+                createBlogPost.getCreatedAt(),
+                createBlogPost.getPublishedAt()
+        ));
+    }
+
     @EventSourcingHandler
     public void blogPostCreated(BlogPostCreated blogPostCreated) {
         this.id = blogPostCreated.getId();
@@ -54,6 +62,17 @@ public class BlogPost implements Serializable{
         this.tags = blogPostCreated.getTags();
         this.author = blogPostCreated.getAuthor();
         this.createdAt = blogPostCreated.getCreatedAt();
+    }
+
+    @EventSourcingHandler
+    public void legacyBlogPostCreated(LegacyBlogPostCreated legacyBlogPostCreated) {
+        this.id = legacyBlogPostCreated.getId();
+        this.title = legacyBlogPostCreated.getTitle();
+        this.content = legacyBlogPostCreated.getContent();
+        this.tags = legacyBlogPostCreated.getTags();
+        this.author = legacyBlogPostCreated.getAuthor();
+        this.createdAt = legacyBlogPostCreated.getCreatedAt();
+        this.publishedAt = legacyBlogPostCreated.getPublishedAt();
     }
 
     @CommandHandler

@@ -2,10 +2,7 @@ package nl.martijnklene.api.domain.projection;
 
 import nl.martijnklene.api.application.entity.BlogPost;
 import nl.martijnklene.api.application.repository.BlogPostRepository;
-import nl.martijnklene.api.domain.event.BlogPostChanged;
-import nl.martijnklene.api.domain.event.BlogPostCreated;
-import nl.martijnklene.api.domain.event.BlogPostDeleted;
-import nl.martijnklene.api.domain.event.BlogPostPublished;
+import nl.martijnklene.api.domain.event.*;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,19 @@ public class BlogPostProjector {
         blogPost.setTags(blogPostCreated.getTags());
         blogPost.setAuthor(blogPostCreated.getAuthor());
         blogPost.setCreatedAt(blogPostCreated.getCreatedAt());
+        blogPostRepository.save(blogPost);
+    }
+
+    @EventHandler
+    public void on(LegacyBlogPostCreated legacyBlogPostCreated) {
+        BlogPost blogPost = new BlogPost();
+        blogPost.setId(legacyBlogPostCreated.getId());
+        blogPost.setTitle(legacyBlogPostCreated.getTitle());
+        blogPost.setContent(legacyBlogPostCreated.getContent());
+        blogPost.setTags(legacyBlogPostCreated.getTags());
+        blogPost.setAuthor(legacyBlogPostCreated.getAuthor());
+        blogPost.setCreatedAt(legacyBlogPostCreated.getCreatedAt());
+        blogPost.setPublishedAt(legacyBlogPostCreated.getPublishedAt());
         blogPostRepository.save(blogPost);
     }
 

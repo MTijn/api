@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScans;
 		@ComponentScan(basePackages = "nl.martijnklene.api")
 )
 @SpringBootApplication
-@EntityScan(basePackages = {"nl.martijnklene.api", "org.axonframework.eventhandling.saga.repository.jpa"})
+@EntityScan(basePackages = {"nl.martijnklene.api", "org.axonframework.eventhandling.saga.repository.jpa", "org.axonframework.eventsourcing.eventstore.jpa"})
 public class ApiForMartijnKleneApplication {
 
 	public static void main(String[] args) {
