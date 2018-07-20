@@ -1,27 +1,34 @@
 version: "3.6"
 services:
   web:
-    image: registry.martijnklene.nl/mtijnnl/api:latest
+    image: mtijnnl/api:latest
     depends_on:
       - postgres
     networks:
       - traefik_web
+      - api_internal
     volumes:
-      - /opt/api/config:/usr/share/api/config
+      - /opt/api/config:/config
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.portainer.port: "8080"
+        traefik.docker.network: "traefik_web"
+        traefik.frontend.rule: "Host:api.martijnklene.nl"
+        traefik.frontend.entryPoints: "https"
+        traefik.frontend.redirect.entryPoint: "https"
+
   postgres:
-    environment:
-      POSTGRES_PASSWORD: /run/secrets/database.password
-      POSTGRES_USER: /run/secrets/database.username
-    secrets:
-      - database.username
-      - database.password
+    image: postgres:alpine
+    networks:
+      - api_internal
+    volumes:
+      - postgres:/var/lib/postgresql/data
 
 networks:
   traefik_web:
     external: true
+  api_internal:
 
-secrets:
-  database.username:
-    external: true
-  database.password:
-    external: true
+volumes:
+  postgres:
