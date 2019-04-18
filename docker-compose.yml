@@ -11,7 +11,7 @@ services:
     networks:
       - internal
   postgres:
-    image: postgres
+    image: postgres:10.7-alpine
     volumes:
       - ./docker/postgres:/docker-entrypoint-initdb.d/
       - /data/api/database:/var/lib/postgresql/data
