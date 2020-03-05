@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   web:
-    image: mtijnnl/api:latest
+    image: mtijnnl/api:1.0
     depends_on:
       - postgres
     networks:
@@ -19,7 +19,7 @@ services:
         traefik.frontend.redirect.entryPoint: "https"
 
   postgres:
-    image: postgres:alpine
+    image: postgres:10.7-alpine
     networks:
       - api_internal
     volumes:
