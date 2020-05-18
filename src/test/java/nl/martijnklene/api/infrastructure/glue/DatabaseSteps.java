@@ -9,9 +9,6 @@ public class DatabaseSteps {
 
     @Before
     public void clearDatabase() {
-        flyway.setValidateOnMigrate(false);
-        flyway.setGroup(true);
-
         flyway.clean();
         flyway.migrate();
     }
