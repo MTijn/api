@@ -1,33 +1,25 @@
 version: "3.6"
 services:
-  api:
-    image: mtijnnl/api:1.0
-    depends_on:
-      - postgres
+  blog:
+    image: mtijnnl/api:latest
     networks:
       - traefik_web
-      - api_internal
-    volumes:
-      - /opt/api/config:/config
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.api.rule=Host(`api.martijnklene.nl`)
-      - traefik.http.routers.api.entrypoints=https
-      - traefik.http.services.api.loadbalancer.server.port=8080
-      - traefik.http.routers.presentations.tls=true
-      - traefik.http.routers.presentations.tls.certresolver=default
-
-  postgres:
-    image: postgres:10.7-alpine
-    networks:
-      - api_internal
-    volumes:
-      - postgres:/var/lib/postgresql/data
+    secrets:
+      - secret_thing
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.blog.rule=Host(`api.martijnklene.nl`)
+        - traefik.http.routers.blog.entrypoints=https
+        - traefik.http.services.blog.loadbalancer.server.port=8080
+        - traefik.http.routers.blog.tls=true
+        - traefik.docker.network=traefik_web
 
 networks:
   traefik_web:
     external: true
   api_internal:
 
-volumes:
-  postgres:
+secrets:
+  secret_thing:
+    external: true
